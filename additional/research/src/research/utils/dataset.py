@@ -3,6 +3,8 @@ import kagglehub
 import os
 import pandas as pd
 from PIL import Image
+from .config import Config
+import kagglehub.config
 
 
 class ArtiFactDataset(VisionDataset):
@@ -22,6 +24,10 @@ class ArtiFactDataset(VisionDataset):
             start_index (int, optional): Индекс, с которого начинать выборку изображений.
                 Нужно для разделения датасета на test/train. Например test.start_index = 50 000 (будут индексы [50 000 - 150 000)). Defaults to 0.
         """
+        kagglehub.config.set_kaggle_credentials(
+            Config.KAGGLE_USERNAME, Config.KAGGLE_KEY
+        )
+
         root = kagglehub.dataset_download("awsaf49/artifact-dataset")
         super().__init__(root, transform=transform)
         metadata = self.get_metadata()
