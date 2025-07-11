@@ -5,6 +5,16 @@ import pandas as pd
 from PIL import Image
 from .config import Config
 import kagglehub.config
+from typing import NamedTuple
+
+
+MergeDataset = NamedTuple(
+    "MergeDataset",
+    [
+        ("train_dataset", VisionDataset),
+        ("val_dataset", VisionDataset),
+    ],
+)
 
 
 class ArtiFactDataset(VisionDataset):

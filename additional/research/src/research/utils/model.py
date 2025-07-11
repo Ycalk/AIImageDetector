@@ -57,7 +57,7 @@ class Model(nn.Module):
                     nn.Dropout(p=dropout_probability),
                 ]
             )
-        classifier_layers.extend([nn.Linear(in_channels, 1), nn.Sigmoid()])
+        classifier_layers.append(nn.Linear(in_channels, 1))
         self.classifier = nn.Sequential(*classifier_layers)
 
     def get_conv_block(
@@ -94,5 +94,5 @@ if __name__ == "__main__":
     model = Model()
     print(model)
     x = torch.randn(1, 3, 256, 256)
-    output = model(x)
+    output: torch.Tensor = model(x)
     assert output.shape == (1, 1), "Output shape should be (1, 1)"
