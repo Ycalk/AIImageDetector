@@ -1,4 +1,5 @@
 from torchvision.datasets import VisionDataset
+from torchvision.transforms import transforms
 import kagglehub
 import os
 import pandas as pd
@@ -18,6 +19,49 @@ MergeDataset = NamedTuple(
 
 
 class ArtiFactDataset(VisionDataset):
+    """Класс для работы с датасетом ArtiFact (awsaf49/artifact-dataset),
+    содержащим реальные и сгенерированные изображения."""
+
+    @classmethod
+    def get_merged_dataset(
+        cls, size: int = 100_000, images_ratio: float = 0.5, ratio: float = 0.5
+    ) -> MergeDataset:
+        """Получает датасет для обучения и валидации, состоящий из реальных и сгенерированных изображений.
+
+        Args:
+            size (int, optional): Суммарное количество изображений в датасете. Defaults to 100_000.
+            images_ratio (float, optional): Распределение реальных и сгенерированных изображений в датасете.
+                Если images_ratio = 0.5, то в датасете будет 50% реальных и 50% сгенерированных изображений.
+                Если images_ratio = 0.7, то в датасете будет 70% реальных и 30% сгенерированных изображений.
+                Defaults to 0.5.
+            ratio (float, optional): Соотношение между train и val датасетами.
+                Если ratio = 0.5, то в train и val датасетах будет по 50% изображений.
+                Если ratio = 0.7, то в train датасете будет 70% изображений, а в val - 30%.
+                Defaults to 0.5.
+
+        Returns:
+            MergeDataset: Кортеж из train и val датасетов, содержащих изображения и их метки.
+        """
+        train_size = int(size * ratio)
+        val_size = size - train_size
+
+        train_dataset = cls(
+            transform=transforms.Compose(
+                [transforms.ToTensor(), transforms.Resize((256, 256))]
+            ),
+            images_count=train_size,
+            ratio=images_ratio,
+            start_index=0,
+        )
+        val_dataset = cls(
+            transform=None,
+            images_count=val_size,
+            ratio=images_ratio,
+            start_index=train_size,
+        )
+
+        return MergeDataset(train_dataset, val_dataset)
+
     def __init__(
         self,
         transform=None,
@@ -30,7 +74,10 @@ class ArtiFactDataset(VisionDataset):
         Args:
             transform (_type_, optional): Трансформации, применяемые к изображениям. Defaults to None.
             images_count (int, optional): Количество изображений в датасете (максимум 2 496 738). Defaults to 100_000.
-            ratio (float, optional): Соотношение между реальными и сгенерированными изображениями. Defaults to 0.5.
+            ratio (float, optional): Соотношение между реальными и сгенерированными изображениями.
+                Если ratio = 0.5, то в датасете будет 50% реальных и 50% сгенерированных изображений.
+                Если ratio = 0.7, то в датасете будет 70% реальных и 30% сгенерированных изображений.
+                Defaults to 0.5.
             start_index (int, optional): Индекс, с которого начинать выборку изображений.
                 Нужно для разделения датасета на test/train. Например test.start_index = 50 000 (будут индексы [50 000 - 150 000)). Defaults to 0.
         """
@@ -44,8 +91,8 @@ class ArtiFactDataset(VisionDataset):
 
         metadata = metadata.iloc[start_index:]
 
-        generated_needed = int(images_count * ratio)
-        real_needed = images_count - generated_needed
+        real_needed = int(images_count * ratio)
+        generated_needed = images_count - real_needed
 
         generated = metadata[metadata["target"] == 1]
         real = metadata[metadata["target"] == 0]
