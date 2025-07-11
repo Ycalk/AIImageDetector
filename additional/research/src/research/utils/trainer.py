@@ -48,10 +48,10 @@ class Trainer:
         """
         self.model = model.to(device)
         self.train_loader = DataLoader(
-            dataset.train_dataset, batch_size=batch_size, shuffle=True, num_workers=5
+            dataset.train_dataset, batch_size=batch_size, shuffle=True
         )
         self.val_loader = DataLoader(
-            dataset.val_dataset, batch_size=batch_size, shuffle=False, num_workers=5
+            dataset.val_dataset, batch_size=batch_size, shuffle=False
         )
 
         self.optimizer = optimizer or optim.Adam(
@@ -84,7 +84,10 @@ class Trainer:
                     val_cm=val_cm,
                 )
             )
-
+            
+            torch.cuda.empty_cache()
+            torch.cuda.ipc_collect()
+            
             print(
                 f"Epoch {epoch + 1}/{self.epochs} - "
                 f"Train Loss: {train_loss:.4f}, "
@@ -122,13 +125,14 @@ class Trainer:
             inputs: torch.Tensor = batch_x.to(self.device)
             targets: torch.Tensor = batch_y.to(self.device).view(-1, 1).float()
 
-            if not validate:
+            if validate:
+                with torch.no_grad():
+                    logits: torch.Tensor = self.model(inputs)
+                    loss: torch.Tensor = self.criterion(logits, targets)
+            else:
                 self.optimizer.zero_grad()
-
-            logits: torch.Tensor = self.model(inputs)
-            loss: torch.Tensor = self.criterion(logits, targets)
-
-            if not validate:
+                logits = self.model(inputs)
+                loss = self.criterion(logits, targets)
                 loss.backward()
                 self.optimizer.step()
 
