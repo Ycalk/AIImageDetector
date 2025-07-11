@@ -47,14 +47,24 @@ class ArtiFactDataset(VisionDataset):
 
         train_dataset = cls(
             transform=transforms.Compose(
-                [transforms.ToTensor(), transforms.Resize((256, 256))]
+                [
+                    transforms.Resize((256, 256)),
+                    transforms.ToTensor(),
+                    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+                ]
             ),
             images_count=train_size,
             ratio=images_ratio,
             start_index=0,
         )
         val_dataset = cls(
-            transform=None,
+            transform=transforms.Compose(
+                [
+                    transforms.Resize((256, 256)),
+                    transforms.ToTensor(),
+                    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+                ]
+            ),
             images_count=val_size,
             ratio=images_ratio,
             start_index=train_size,
@@ -152,6 +162,8 @@ class ArtiFactDataset(VisionDataset):
     def __getitem__(self, index: int) -> tuple[Image.Image, int]:
         row = self.data.iloc[index]
         image = Image.open(row["path"]).convert("RGB")
+        if self.transform:
+            image = self.transform(image)
         return image, row["target"]
 
     def __len__(self) -> int:

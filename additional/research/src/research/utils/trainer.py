@@ -5,6 +5,7 @@ from torch import nn, optim
 from torch.utils.data import DataLoader
 from .dataset import MergeDataset
 from sklearn.metrics import confusion_matrix
+from tqdm import tqdm
 
 
 EpochResult = NamedTuple(
@@ -69,7 +70,7 @@ class Trainer:
         """
         result: list[EpochResult] = []
 
-        for _ in range(self.epochs):
+        for epoch in range(self.epochs):
             train_loss, train_accuracy, train_cm = self._run_epoch(False)
             val_loss, val_accuracy, val_cm = self._run_epoch(True)
 
@@ -82,6 +83,14 @@ class Trainer:
                     val_accuracy=val_accuracy,
                     val_cm=val_cm,
                 )
+            )
+
+            print(
+                f"Epoch {epoch + 1}/{self.epochs} - "
+                f"Train Loss: {train_loss:.4f}, "
+                f"Train Accuracy: {train_accuracy:.4f}, "
+                f"Val Loss: {val_loss:.4f}, "
+                f"Val Accuracy: {val_accuracy:.4f}"
             )
 
         return result
@@ -109,9 +118,9 @@ class Trainer:
         all_preds: list[ndarray] = []
         all_targets: list[ndarray] = []
 
-        for batch_x, batch_y in data_loader:
+        for batch_x, batch_y in tqdm(data_loader):
             inputs: torch.Tensor = batch_x.to(self.device)
-            targets: torch.Tensor = batch_y.to(self.device)
+            targets: torch.Tensor = batch_y.to(self.device).view(-1, 1).float()
 
             if not validate:
                 self.optimizer.zero_grad()
@@ -124,7 +133,7 @@ class Trainer:
                 self.optimizer.step()
 
             total_loss += loss.item()
-            pred = logits.argmax(dim=1, keepdim=True)
+            pred = (logits > 0).int()
             correct += pred.eq(targets.view_as(pred)).sum().item()
             total += targets.size(0)
 
