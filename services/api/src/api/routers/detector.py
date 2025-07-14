@@ -3,6 +3,7 @@ from messaging_schema.exchanges import detector_exchange
 from messaging_schema.queues import detector_queue
 from messaging_schema.models import DetectionRequest, DetectionResponse
 from ..utils import broker, Config
+import base64
 from pydantic import ValidationError
 
 
@@ -22,9 +23,10 @@ async def detect(image: UploadFile = File(...)):
     """Detect image generate by AI"""
     try:
         file_bytes = image.file.read()
+        encoded_image = base64.b64encode(file_bytes).decode("utf-8")
         response = await broker.request(
             DetectionRequest(
-                image=file_bytes,
+                image=encoded_image,
             ),
             exchange=detector_exchange,
             queue=detector_queue,

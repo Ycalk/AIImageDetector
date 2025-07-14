@@ -1,4 +1,5 @@
 import io
+import base64
 from messaging_schema.exchanges import detector_exchange
 from messaging_schema.queues import detector_queue
 from messaging_schema.models.detect import (
@@ -17,7 +18,8 @@ async def detect(
     request: DetectionRequest, model: Model = Context()
 ) -> DetectionResponse | DetectionError:
     try:
-        image = Image.open(io.BytesIO(request.image)).convert("RGB")
+        decoded_bytes = base64.b64decode(request.image)
+        image = Image.open(io.BytesIO(decoded_bytes)).convert("RGB")
         return DetectionResponse(result=model(image))
     except UnidentifiedImageError:
         return DetectionError(

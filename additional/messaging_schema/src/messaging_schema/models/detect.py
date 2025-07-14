@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field
 
 
 class DetectionRequest(BaseModel):
-    image: bytes = Field(..., description="Base64 encoded image data")
+    image: str = Field(..., description="Base64 encoded image data")
 
 
 class DetectionResponse(BaseModel):

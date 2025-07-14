@@ -2,14 +2,14 @@
 
 [[package]]
 name = "ai-image-detector-messaging-schema"
-version = "0.1.0"
+version = "0.3.0"
 description = ""
 optional = false
 python-versions = "<4.0,>=3.11"
 groups = ["main"]
 files = [
-    {file = "ai_image_detector_messaging_schema-0.1.0-py3-none-any.whl", hash = "sha256:2e02ddd4421e0b51bd53cfc19f214b399d2c6476717510b41b09bd7b6df1ca81"},
-    {file = "ai_image_detector_messaging_schema-0.1.0.tar.gz", hash = "sha256:f684f0c86e1ebbe22139fc6182ddda2e3100e3f8e62e3c563fd5228c2d56bef7"},
+    {file = "ai_image_detector_messaging_schema-0.3.0-py3-none-any.whl", hash = "sha256:966dc9279847a704c3c85bef5a0da0236e9c08e0dfb6cc0920fe52fd8589e97a"},
+    {file = "ai_image_detector_messaging_schema-0.3.0.tar.gz", hash = "sha256:d4470a7bf612cb777d9c398871c2398d8f77642423b574f399951432f1d85779"},
 ]
 
 [package.dependencies]
@@ -1769,4 +1769,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<4.0"
-content-hash = "1a45ce0e4e1e1cc9662484897ea0e5dece2481c72e7647bf76a4e34c20d1608b"
+content-hash = "48ab8b76d9e9be402f3317fc855c35a161a3e2a4ccaf0edde23ebaa9174fda47"
