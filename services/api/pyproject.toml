@@ -10,7 +10,8 @@ requires-python = ">=3.11,<4.0"
 dependencies = [
     "fastapi[standard] (>=0.116.1,<0.117.0)",
     "faststream[rabbit] (>=0.5.47,<0.6.0)",
-    "python-dotenv (>=1.1.1,<2.0.0)"
+    "python-dotenv (>=1.1.1,<2.0.0)",
+    "ai-image-detector-messaging-schema (>=0.1.0,<0.2.0)"
 ]
 
 [tool.poetry]
