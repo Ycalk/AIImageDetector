@@ -39,7 +39,7 @@ class GradCam:
         )
 
         input_tensor: torch.Tensor = (
-            transform(self.image).unsqueeze(0).to(device) # type: ignore
+            transform(self.image).unsqueeze(0).to(device)  # type: ignore
         )
 
         output = self.model(input_tensor)
