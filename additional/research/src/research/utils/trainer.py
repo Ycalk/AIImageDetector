@@ -144,7 +144,8 @@ class Trainer:
                 self.optimizer.step()
 
             total_loss += loss.item()
-            pred = (logits > 0).int()
+            prob = torch.sigmoid(logits)
+            pred = (prob > 0.5).int()
             correct += pred.eq(targets.view_as(pred)).sum().item()
             total += targets.size(0)
 
