@@ -7,16 +7,26 @@ from torchvision import transforms
 
 
 class GradCam:
+    """Генерация Grad-CAM для заданной модели и слоя."""
+
     def __init__(self, model: nn.Module, target_layer: nn.Module, image: Image.Image):
+        """Инициализация GradCam.
+
+        Args:
+            model (nn.Module): Модель для генерации Grad-CAM.
+            target_layer (nn.Module): Слой, для которого будет вычисляться Grad-CAM.
+            image (Image.Image): Изображение, для которого будет вычисляться Grad-CAM.
+        """
         self.model = model
         self.target_layer = target_layer
-        self.gradients = None
         self.image = image
 
-    def save_gradient(self, grad):
-        self.gradients = grad
-
     def __call__(self) -> tuple[np.ndarray, float]:
+        """Генерация Grad-CAM для заданного изображения.
+
+        Returns:
+            tuple[np.ndarray, float]: Кортеж, содержащий наложение Grad-CAM на изображение и оценку модели для этого изображения.
+        """
         device = next(self.model.parameters()).device
         self.model.eval()
 

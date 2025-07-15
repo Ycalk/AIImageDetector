@@ -23,6 +23,8 @@ EpochResult = NamedTuple(
 
 
 class Trainer:
+    """Тренер для обучения модели на заданном датасете."""
+
     def __init__(
         self,
         model: nn.Module,

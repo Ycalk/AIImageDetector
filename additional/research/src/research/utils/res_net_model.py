@@ -4,10 +4,17 @@ import torch
 
 
 class ResNetModel(nn.Module):
+    """ResNet18-based model для классификации изображений."""
+
     def __init__(self) -> None:
+        """Инициализация модели ResNet18 с предобученными весами.
+        Используется ResNet18 с удаленным полносвязным слоем и добавленными
+        новыми слоями для классификации.
+        Полносвязный слой состоит из двух линейных слоев с ReLU и Dropout.
+        """
         super().__init__()
         self.features = resnet18(weights=ResNet18_Weights.IMAGENET1K_V1)
-        self.features.fc = nn.Identity() # type: ignore
+        self.features.fc = nn.Identity()  # type: ignore
         self.fc = nn.Sequential(
             nn.Linear(512, 128),
             nn.ReLU(),
@@ -16,10 +23,16 @@ class ResNetModel(nn.Module):
         )
 
     def freeze_features(self) -> None:
+        """Заморозка параметров слоев признаков модели.
+        Это позволяет использовать предобученные веса ResNet18 без их изменения.
+        """
         for param in self.features.parameters():
             param.requires_grad = False
 
     def unfreeze_features(self) -> None:
+        """Разморозка параметров слоев признаков модели.
+        Это позволяет обучать модель с использованием предобученных весов ResNet18.
+        """
         for param in self.features.parameters():
             param.requires_grad = True
 
