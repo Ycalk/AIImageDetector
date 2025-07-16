@@ -5,6 +5,7 @@ from .routers import detector
 from messaging_schema.exchanges import detector_exchange
 from messaging_schema.queues import detector_queue
 from contextlib import asynccontextmanager
+from fastapi.middleware.cors import CORSMiddleware
 
 
 @asynccontextmanager
@@ -23,3 +24,11 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title=Config.API_NAME, lifespan=lifespan)
 app.include_router(detector.router)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
