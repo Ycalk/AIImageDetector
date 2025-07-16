@@ -1,11 +1,11 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import { DemoPage } from '@/pages/Demo.page';
 import { ResearchPage } from '@/pages/Research.page';
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <DemoPage />,
+        element: <Navigate to="/demo" replace />,
     },
     {
         path: '/demo',
