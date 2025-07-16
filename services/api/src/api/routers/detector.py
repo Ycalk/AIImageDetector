@@ -1,7 +1,11 @@
 from fastapi import APIRouter, File, UploadFile, HTTPException
 from messaging_schema.exchanges import detector_exchange
 from messaging_schema.queues import detector_queue
-from messaging_schema.models.detect import DetectionError, DetectionRequest, DetectionResponse
+from messaging_schema.models.detect import (
+    DetectionError,
+    DetectionRequest,
+    DetectionResponse,
+)
 from ..utils import broker, Config
 import base64
 from pydantic import ValidationError
