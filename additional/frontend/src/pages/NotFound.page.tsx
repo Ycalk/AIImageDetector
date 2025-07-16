@@ -2,7 +2,7 @@ import { Button, Container, Group, Text, Title } from '@mantine/core';
 import classes from './NothingFoundBackground.module.css';
 import { useNavigate } from 'react-router-dom';
 
-export function NotFoundPage() {
+export function NothingFoundPage() {
     function Illustration(props: React.ComponentPropsWithoutRef<'svg'>) {
         return (
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 362 145" {...props}>

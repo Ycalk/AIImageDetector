@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import { DemoPage } from '@/pages/Demo.page';
 import { ResearchPage } from '@/pages/Research.page';
-import { NotFoundPage } from '@/pages/NotFound.page';
+import { NothingFoundPage } from '@/pages/NotFound.page';
 
 const router = createBrowserRouter([
     {
@@ -18,7 +18,7 @@ const router = createBrowserRouter([
     },
     {
         path: '*',
-        element: <NotFoundPage />,
+        element: <NothingFoundPage />,
     },
 ],
     {
