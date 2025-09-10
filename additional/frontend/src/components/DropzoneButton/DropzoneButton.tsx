@@ -31,7 +31,7 @@ export function DropzoneButton() {
         setError(null);
 
         try {
-            const response = await fetch('https://ai-image-detector-api.cloudpub.ru/detector/detect', {
+            const response = await fetch('/api/detect', {
                 method: 'POST',
                 body: formData,
             });
