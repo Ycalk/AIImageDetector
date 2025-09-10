@@ -3,7 +3,7 @@ name: Tests
 on:
   push:
     branches: 
-      - workflow-test
+      - main
 
 jobs:
   test-api:

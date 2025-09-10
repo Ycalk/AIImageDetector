@@ -1,9 +1,10 @@
 name: Deploy
 
 on:
-  push:
-    branches:
-      - workflow-test
+  workflow_run:
+    workflows: [Tests]
+    types:
+      - completed
 
 jobs:
   build-and-copy:

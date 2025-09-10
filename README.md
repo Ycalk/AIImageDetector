@@ -5,7 +5,11 @@
 
 # Демо
 
-https://ycalk.github.io/AIImageDetector
+https://ai-image-detector.ycalk.tech
+
+# API Документация
+
+https://ai-image-detector.ycalk.tech/api/docs
 
 # Стек
 
