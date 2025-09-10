@@ -51,7 +51,6 @@ jobs:
           cp docker-compose.yaml deploy/
           cp api.env deploy/
           cp secrets.env deploy/
-          wget -O deploy/services/detector/model.pt https://huggingface.co/ycalk/AIImageDetector/resolve/main/model.pt
       
       - name: Archive deploy directory
         run: |
