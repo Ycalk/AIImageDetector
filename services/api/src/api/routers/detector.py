@@ -27,7 +27,7 @@ async def detect(request: Request, image: UploadFile = File(...)):
     """Detect image generate by AI"""
     try:
         publisher: AsyncAPIPublisher = request.app.state.detector_publisher
-        encoded_image = base64.b64encode(image.file.read()).decode("utf-8")
+        encoded_image = base64.b64encode(await image.read()).decode("utf-8")
         response = await publisher.request(
             DetectionRequest(
                 image=encoded_image,

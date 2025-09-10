@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from logging import getLogger
 from .utils import Config
+from fastapi.middleware.cors import CORSMiddleware
 from faststream.rabbit import RabbitBroker
 from faststream.security import SASLPlaintext
 from .routers import detector
@@ -48,6 +49,14 @@ app = FastAPI(
     redoc_url=Config.DOCS_PREFIX + "/redoc",
     openapi_url=Config.DOCS_PREFIX + "/openapi.json",
     swagger_ui_oauth2_redirect_url=Config.DOCS_PREFIX + "/docs/oauth2-redirect",
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(detector.router)
