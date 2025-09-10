@@ -64,4 +64,4 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_SSH_PORT }}
           source: "deploy.zip"
-          target: "/home/${{ secrets.SERVER_USER }}/AIImageDetector/deploy"
+          target: "/home/${{ secrets.SERVER_USER }}/AIImageDetector/"
