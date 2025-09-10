@@ -24,10 +24,6 @@ jobs:
       - name: Build frontend
         run: npm run build
         working-directory: additional/frontend
-
-      - name: Create 404.html
-        run: cp ./dist/index.html ./dist/404.html
-        working-directory: additional/frontend
       
       - name: Create secrets.env file
         run: |

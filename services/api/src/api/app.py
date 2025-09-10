@@ -46,6 +46,8 @@ app = FastAPI(
     version=version("api"),
     docs_url=Config.DOCS_PREFIX + "/docs",
     redoc_url=Config.DOCS_PREFIX + "/redoc",
+    openapi_url=Config.DOCS_PREFIX + "/openapi.json",
+    swagger_ui_oauth2_redirect_url=Config.DOCS_PREFIX + "/docs/oauth2-redirect",
 )
 
 app.include_router(detector.router)
