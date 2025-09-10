@@ -21,7 +21,7 @@ jobs:
         run: npm ci
         working-directory: additional/frontend
 
-      - name: Build project
+      - name: Build frontend
         run: npm run build
         working-directory: additional/frontend
 
@@ -54,7 +54,7 @@ jobs:
           wget -O deploy/services/detector/model.pt https://huggingface.co/ycalk/AIImageDetector/resolve/main/model.pt
       
       - name: Archive deploy directory
-        run: tar -czf deploy.tar.gz -C deploy .
+        run: zip -r deploy.zip deploy -x '*.git*' '*.github/*'
       
       - name: Transfer files to server
         uses: appleboy/scp-action@v1
@@ -63,5 +63,5 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_SSH_PORT }}
-          source: "deploy.tar.gz"
-          target: "/home/${{ secrets.SERVER_USER }}/AIImageDetector/"
+          source: "deploy.zip"
+          target: "/home/${{ secrets.SERVER_USER }}/AIImageDetector/deploy"
