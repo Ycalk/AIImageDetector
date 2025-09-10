@@ -33,7 +33,6 @@ services:
       - no-new-privileges:true
     cap_drop:
       - ALL
-    read_only: true
     restart: always
     
     environment:

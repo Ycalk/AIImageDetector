@@ -51,12 +51,4 @@ app = FastAPI(
     swagger_ui_oauth2_redirect_url=Config.DOCS_PREFIX + "/docs/oauth2-redirect",
 )
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 app.include_router(detector.router)
