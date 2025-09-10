@@ -21,9 +21,6 @@ const router = createBrowserRouter([
         element: <NothingFoundPage />,
     },
 ],
-    {
-        basename: '/AIImageDetector/',
-    }
 );
 
 export function Router() {

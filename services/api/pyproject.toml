@@ -1,6 +1,6 @@
 [project]
 name = "api"
-version = "0.1.0"
+version = "0.2.0"
 description = ""
 authors = [
     {name = "ycalk",email = "alosev752@gmail.com"}
@@ -17,6 +17,10 @@ dependencies = [
 [tool.poetry]
 packages = [{include = "api", from = "src"}]
 
+
+[tool.poetry.group.dev.dependencies]
+pytest-asyncio = "^1.1.0"
+asgi-lifespan = "^2.1.0"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

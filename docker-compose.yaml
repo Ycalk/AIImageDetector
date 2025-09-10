@@ -1,0 +1,73 @@
+services:
+  rabbitmq:
+    image: rabbitmq:4.1.2-alpine
+    
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    restart: always
+    hostname: rabbitmq
+    
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    env_file:
+      - secrets.env
+
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    ports:
+      - "127.0.0.1:8000:8000"
+    build:
+      context: services/api
+      dockerfile: Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: true
+    restart: always
+    
+    environment:
+      - SERVER_PORT=8000
+      - RABBIT_PORT=5672
+      - RABBIT_HOST=rabbitmq
+    env_file:
+      - secrets.env
+      - api.env
+
+  detector:
+    build:
+      context: services/detector
+      dockerfile: Dockerfile
+    depends_on:
+      api:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: true
+    tmpfs:
+      - /tmp
+    restart: always
+
+    environment:
+      - RABBIT_PORT=5672
+      - RABBIT_HOST=rabbitmq
+    env_file:
+      - secrets.env
+
+volumes:
+  rabbitmq-data:
