@@ -18,6 +18,7 @@ router = APIRouter(prefix="/api", tags=["detector"])
     response_model=DetectionResponse,
     responses={
         422: {"description": "Incorrect request format"},
+        400: {"description": "Bad request"},
         504: {"description": "Request timed out"},
         500: {"description": "Internal server error"},
     },
