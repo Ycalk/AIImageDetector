@@ -1,7 +1,5 @@
 import base64
 from fastapi import APIRouter, File, UploadFile, HTTPException, Request
-from messaging_schema.exchanges import detector_exchange
-from messaging_schema.queues import detector_queue
 from messaging_schema.models.detect import (
     DetectionError,
     DetectionRequest,
@@ -20,7 +18,6 @@ router = APIRouter(prefix="/api", tags=["detector"])
     response_model=DetectionResponse,
     responses={
         422: {"description": "Incorrect request format"},
-        400: {"description": "Validation error"},
         504: {"description": "Request timed out"},
         500: {"description": "Internal server error"},
     },
@@ -34,8 +31,6 @@ async def detect(request: Request, image: UploadFile = File(...)):
             DetectionRequest(
                 image=encoded_image,
             ),
-            exchange=detector_exchange,
-            queue=detector_queue,
             timeout=Config.DETECT_IMAGE_TIMEOUT,
         )
         result = DetectionResponse.model_validate_json(response.body)
@@ -49,6 +44,7 @@ async def detect(request: Request, image: UploadFile = File(...)):
                     )
                 },
             )
+        return result
     except ValidationError as e:
         try:
             error = DetectionError.model_validate_json(response.body)  # type: ignore

@@ -7,11 +7,12 @@ from .routers import detector
 from messaging_schema.exchanges import detector_exchange
 from messaging_schema.queues import detector_queue
 from contextlib import asynccontextmanager
+from typing import AsyncGenerator
 from importlib.metadata import version
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     """Application lifespan context manager."""
     logger = getLogger("uvicorn")
     logger.info("Starting broker...")
